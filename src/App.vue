@@ -1,5 +1,6 @@
 <script setup>
   import { ref, onMounted, reactive } from 'vue';
+  import Alert from './components/Alert.vue'
 
   const coins = ref([
         { code: 'USD', text: 'USD'},
@@ -15,6 +16,8 @@
     criptoCoin: ''
   })
 
+  const error = ref('')
+
   onMounted(() => {
     const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD'
     fetch(url)
@@ -24,13 +27,30 @@
         criptoCoins.value = Data
       })
   })
+
+  const quoteCripto = () => {
+    //validate that coin and cripto coin has been selected
+    if (Object.values(quote).includes('')) {
+      //console.log('Please select from both coins')
+      error.value = 'Please select from both coins'
+      return
+    }
+    error.value = ''
+    console.log('quoting...')
+  }
 </script>
 
 <template>
   <div class="contenedor">
     <h1 class="titulo">Quoter <span> Cripto currency</span></h1>
     <div class="contenido">
-      <form class="formulario">
+      <Alert v-if="error">
+          {{error}}
+      </Alert>
+      <form
+        class="formulario"
+        @submit="quoteCripto"
+      >
         <div class="campo">
           <label for="coin">Coin:</label>
           <select
