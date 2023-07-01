@@ -36,8 +36,16 @@
       return
     }
     error.value = ''
-    console.log('quoting...')
+    //console.log('quoting...')
+    getQuote()
   }
+
+  const getQuote = () => {
+    const { coin, criptoCoin } = quote
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptoCoin}&tsyms=${coin}`
+    //console.log(url)
+  }
+
 </script>
 
 <template>
