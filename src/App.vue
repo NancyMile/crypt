@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, reactive } from 'vue';
 
   const coins = ref([
         { code: 'USD', text: 'USD'},
@@ -8,6 +8,12 @@
   ])
 
   const criptoCoins = ref([])
+
+  //quote will contain the user selection
+  const quote = reactive({
+    coin: '',
+    criptoCoin: ''
+  })
 
   onMounted(() => {
     const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD'
@@ -27,7 +33,10 @@
       <form class="formulario">
         <div class="campo">
           <label for="coin">Coin:</label>
-          <select id="coin">
+          <select
+            id="coin"
+            v-model="quote.coin"
+          >
             <option value="">-- Select --</option>
             <option
               v-for="coin in coins"
@@ -38,7 +47,10 @@
 
         <div class="campo">
           <label for="criptoCoin">Cripto Coin:</label>
-          <select id="criptoCoin">
+          <select
+            id="criptoCoin"
+            v-model="quote.criptoCoin"
+          >
             <option value="">-- Select --</option>
             <option
               v-for="criptoCoin in criptoCoins"
