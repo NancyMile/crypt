@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted, reactive } from 'vue'
+  import { ref, onMounted, reactive, computed } from 'vue'
   import Alert from './components/Alert.vue'
 
   const coins = ref([
@@ -16,9 +16,7 @@
     criptoCoin: ''
   })
 
-  const price = ref({
-
-  })
+  const price = ref({})
 
   const error = ref('')
 
@@ -26,10 +24,7 @@
     const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD'
     fetch(url)
       .then(response => response.json())
-      .then(({Data}) => {
-        //console.log(Data) //data it comes as 'Data'
-        criptoCoins.value = Data
-      })
+      .then(({Data}) => criptoCoins.value = Data)
   })
 
   const quoteCripto = () => {
@@ -54,6 +49,10 @@
     price.value = data.DISPLAY[criptoCoin][coin]
   }
 
+  const displayResult = computed(() => {
+     return Object.values(price.value).length > 0  //check if the object is empty
+  })
+
 </script>
 
 <template>
@@ -65,7 +64,7 @@
       </Alert>
       <form
         class="formulario"
-        @submit="quoteCripto"
+        @submit.prevent="quoteCripto"
       >
         <div class="campo">
           <label for="coin">Coin:</label>
@@ -97,6 +96,31 @@
 
         <input type="submit" value="">
       </form>
+      <div v-if="displayResult" class="contenedor-resultado">
+        <h2> Quote Price</h2>
+        <div class="resultado">
+          <img
+            :src="'https://cryptocompare.com/'+ price.IMAGEURL"
+            alt="cripto">
+            <div>
+              <p>
+                Price is: <span>{{price.PRICE}}</span>
+              </p>
+              <p>
+                Highest Price: <span>{{price.HIGHDAY}}</span>
+              </p>
+              <p>
+                Lowest Price: <span>{{price.LOWDAY}}</span>
+              </p>
+              <p>
+                Changes: <span>{{price.CHANGEPCT24HOUR}}%</span>
+              </p>
+              <p>
+                Last update: <span>{{price.LASTUPDATE}}</span>
+              </p>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
   
