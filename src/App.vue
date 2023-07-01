@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted, reactive } from 'vue';
+  import { ref, onMounted, reactive } from 'vue'
   import Alert from './components/Alert.vue'
 
   const coins = ref([
@@ -14,6 +14,10 @@
   const quote = reactive({
     coin: '',
     criptoCoin: ''
+  })
+
+  const price = ref({
+
   })
 
   const error = ref('')
@@ -40,10 +44,14 @@
     getQuote()
   }
 
-  const getQuote = () => {
+  const getQuote = async () => {
     const { coin, criptoCoin } = quote
     const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptoCoin}&tsyms=${coin}`
     //console.log(url)
+    const response = await fetch(url)
+    const data = await response.json()
+    //console.log(data.DISPLAY[criptoCoin][coin])
+    price.value = data.DISPLAY[criptoCoin][coin]
   }
 
 </script>
