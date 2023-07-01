@@ -34,11 +34,21 @@
               :value="coin.code"
             >{{coin.text}}</option>
           </select>
-
         </div>
 
-      </form>
+        <div class="campo">
+          <label for="criptoCoin">Cripto Coin:</label>
+          <select id="criptoCoin">
+            <option value="">-- Select --</option>
+            <option
+              v-for="criptoCoin in criptoCoins"
+              :value="criptoCoin.CoinInfo.Name"
+            >{{criptoCoin.CoinInfo.FullName}}</option>
+          </select>
+        </div>
 
+        <input type="submit" value="">
+      </form>
     </div>
   </div>
   
